@@ -8,6 +8,7 @@ const state = {
   currentIndex: 0,
   streak: 0,
   gameOver: false,
+  swapped: false,      // true = left/right positions swapped for current fight
 };
 
 // === INIT ===
@@ -134,13 +135,18 @@ function showFight() {
   const f1 = state.data.fighters[fight.fighter1];
   const f2 = state.data.fighters[fight.fighter2];
 
+  // Randomly swap left/right positions
+  state.swapped = Math.random() < 0.5;
+
+  const leftFighter = state.swapped ? f2 : f1;
+  const rightFighter = state.swapped ? f1 : f2;
+
   // Update streak display
   document.getElementById("streak").textContent = `STREAK: ${state.streak}`;
 
-  // Fighter 1
-  setFighterDisplay("fighter1", f1);
-  // Fighter 2
-  setFighterDisplay("fighter2", f2);
+  // Display fighters in randomized positions
+  setFighterDisplay("fighter1", leftFighter);
+  setFighterDisplay("fighter2", rightFighter);
 
   // VS center
   document.getElementById("fight-year").textContent = fight.year;
@@ -199,8 +205,20 @@ function handleAnswer(choice) {
   // Prevent double-click
   if (f1El.classList.contains("disabled")) return;
 
-  const correct = choice === fight.winner;
+  // Map click position back to actual fighter
+  // choice: 1 = left, 2 = right
+  // If swapped: left = fighter2, right = fighter1
+  // If not swapped: left = fighter1, right = fighter2
+  let actualChoice;
+  if (state.swapped) {
+    actualChoice = choice === 1 ? 2 : 1;
+  } else {
+    actualChoice = choice;
+  }
+  const correct = actualChoice === fight.winner;
   const winnerFighter = fight.winner === 1 ? state.data.fighters[fight.fighter1] : state.data.fighters[fight.fighter2];
+  // Determine which display side the winner is on (for visual feedback)
+  const winnerSide = (fight.winner === 1) !== state.swapped ? 1 : 2;
 
   // Visual feedback
   f1El.classList.add("disabled");
@@ -218,7 +236,7 @@ function handleAnswer(choice) {
     state.gameOver = true;
 
     const chosenEl = choice === 1 ? f1El : f2El;
-    const correctEl = fight.winner === 1 ? f1El : f2El;
+    const correctEl = winnerSide === 1 ? f1El : f2El;
     chosenEl.classList.add("selected-wrong");
     correctEl.classList.add("was-correct");
 
