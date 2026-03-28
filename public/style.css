@@ -1,0 +1,530 @@
+/* === BOXING QUIZ — Poster Design === */
+
+:root {
+  --bg: #0d0d0d;
+  --bg-card: #1a1a1a;
+  --bg-lighter: #252525;
+  --text: #ffffff;
+  --text-muted: #999999;
+  --red: #dc2626;
+  --red-dark: #b91c1c;
+  --gold: #d4a017;
+  --gold-light: #f0d060;
+  --correct: #22c55e;
+  --correct-bg: rgba(34, 197, 94, 0.15);
+  --wrong: #ef4444;
+  --wrong-bg: rgba(239, 68, 68, 0.15);
+  --max-width: 720px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Oswald', Impact, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === SCREENS === */
+
+.screen {
+  display: none;
+  width: 100%;
+  max-width: var(--max-width);
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.screen.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === POSTER FRAME === */
+
+.poster-frame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 0;
+}
+
+/* === SCREEN 1: NAME ENTRY === */
+
+.title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.title-accent {
+  color: var(--red);
+  font-size: 3.4rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 2.5rem;
+}
+
+.name-entry {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.name-entry label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+}
+
+.name-entry input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-family: 'Oswald', Impact, system-ui, sans-serif;
+  font-size: 1.3rem;
+  text-align: center;
+  text-transform: uppercase;
+  background: var(--bg-card);
+  border: 2px solid var(--gold);
+  color: var(--text);
+  outline: none;
+  letter-spacing: 0.05em;
+}
+
+.name-entry input:focus {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 12px rgba(212, 160, 23, 0.3);
+}
+
+.name-entry input::placeholder {
+  color: var(--text-muted);
+  text-transform: none;
+}
+
+.nickname-preview {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  min-height: 2rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.btn-start {
+  padding: 1rem 3rem;
+  font-family: 'Oswald', Impact, system-ui, sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--red);
+  color: var(--text);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.btn-start:hover:not(:disabled) {
+  background: var(--red-dark);
+}
+
+.btn-start:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-start:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rules {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+/* === SCREEN 2: QUIZ === */
+
+.quiz-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.streak {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+}
+
+/* Fight Card */
+
+.fight-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+}
+
+.fighter-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.fighter-side:hover {
+  border-color: var(--red);
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.fighter-side:focus-visible {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.fighter-side.selected-correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+
+.fighter-side.selected-wrong {
+  border-color: var(--wrong);
+  background: var(--wrong-bg);
+}
+
+.fighter-side.was-correct {
+  border-color: var(--correct);
+  background: var(--correct-bg);
+}
+
+.fighter-side.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.fighter-image-wrap {
+  width: 120px;
+  height: 150px;
+  overflow: hidden;
+  border: 3px solid var(--gold);
+  background: var(--bg-card);
+  position: relative;
+  margin-bottom: 0.75rem;
+}
+
+.fighter-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fighter-image.loaded {
+  opacity: 1;
+}
+
+.fighter-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: var(--text-muted);
+  background: var(--bg-card);
+}
+
+.fighter-placeholder.hidden {
+  display: none;
+}
+
+.fighter-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+/* VS Center */
+
+.vs-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0 0.75rem;
+  flex-shrink: 0;
+}
+
+.vs-badge {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: 0.1em;
+}
+
+.fight-year {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.fight-number {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Feedback */
+
+.feedback {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  text-align: center;
+  background: var(--bg-card);
+  border: 2px solid var(--bg-lighter);
+}
+
+.feedback.hidden {
+  display: none;
+}
+
+.feedback.correct {
+  border-color: var(--correct);
+}
+
+.feedback.wrong {
+  border-color: var(--wrong);
+}
+
+#feedback-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+
+#feedback-detail {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+.btn-next {
+  padding: 0.7rem 2rem;
+  font-family: 'Oswald', Impact, system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--bg);
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-next:hover {
+  background: var(--gold-light);
+}
+
+/* === SCREEN 3: RESULT / LEADERBOARD === */
+
+.result-title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.result-score {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 0.25rem;
+}
+
+.result-detail {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+}
+
+.leaderboard {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 2rem;
+}
+
+.leaderboard-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-align: center;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--gold);
+}
+
+.leaderboard-list {
+  list-style: none;
+  counter-reset: rank;
+}
+
+.leaderboard-list li {
+  counter-increment: rank;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--bg-lighter);
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.leaderboard-list li::before {
+  content: counter(rank) ".";
+  font-weight: 700;
+  color: var(--gold);
+  width: 2rem;
+  flex-shrink: 0;
+}
+
+.leaderboard-list li.highlight {
+  background: rgba(212, 160, 23, 0.15);
+  border-color: var(--gold);
+}
+
+.leaderboard-list li.highlight .lb-name {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.lb-name {
+  flex: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.lb-score {
+  font-weight: 700;
+  color: var(--gold);
+  margin-left: 1rem;
+}
+
+.leaderboard-empty {
+  text-align: center;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.leaderboard-empty::before {
+  content: "" !important;
+}
+
+/* === FOOTER === */
+
+.footer {
+  width: 100%;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  font-family: system-ui, sans-serif;
+}
+
+.footer a {
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+
+/* === RESPONSIVE === */
+
+@media (min-width: 520px) {
+  .title {
+    font-size: 3.5rem;
+  }
+  .title-accent {
+    font-size: 4.2rem;
+  }
+  .fighter-image-wrap {
+    width: 160px;
+    height: 200px;
+  }
+  .fighter-name {
+    font-size: 1.3rem;
+  }
+  .vs-badge {
+    font-size: 2.5rem;
+  }
+  .vs-center {
+    padding: 0 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .fighter-image-wrap {
+    width: 90px;
+    height: 112px;
+  }
+  .fighter-name {
+    font-size: 0.9rem;
+  }
+  .vs-badge {
+    font-size: 1.5rem;
+  }
+  .vs-center {
+    padding: 0 0.4rem;
+  }
+  .title {
+    font-size: 2.2rem;
+  }
+  .title-accent {
+    font-size: 2.6rem;
+  }
+}

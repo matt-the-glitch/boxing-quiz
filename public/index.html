@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heavyweight Boxing Quiz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- SCREEN 1: NAME ENTRY -->
+  <div id="screen-name" class="screen active">
+    <div class="poster-frame">
+      <h1 class="title">HEAVYWEIGHT<br><span class="title-accent">BOXING QUIZ</span></h1>
+      <p class="subtitle">Who won the title fight?</p>
+
+      <div class="name-entry">
+        <label for="player-name">ENTER YOUR NAME</label>
+        <input type="text" id="player-name" placeholder="Your name" maxlength="20" autocomplete="off">
+        <p class="nickname-preview" id="nickname-preview"></p>
+      </div>
+
+      <button class="btn-start" id="btn-start" disabled>FIGHT!</button>
+
+      <p class="rules">Answer correctly to keep your streak alive.<br>One wrong answer and it's over.</p>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: QUIZ -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-header">
+      <span class="streak" id="streak">STREAK: 0</span>
+    </div>
+
+    <div class="fight-card">
+      <div class="fighter-side fighter-left" id="fighter1" role="button" tabindex="0">
+        <div class="fighter-image-wrap">
+          <img id="fighter1-img" alt="" class="fighter-image">
+          <div class="fighter-placeholder" id="fighter1-placeholder">?</div>
+        </div>
+        <p class="fighter-name" id="fighter1-name"></p>
+      </div>
+
+      <div class="vs-center">
+        <span class="vs-badge">VS</span>
+        <span class="fight-year" id="fight-year"></span>
+        <span class="fight-number" id="fight-number"></span>
+      </div>
+
+      <div class="fighter-side fighter-right" id="fighter2" role="button" tabindex="0">
+        <div class="fighter-image-wrap">
+          <img id="fighter2-img" alt="" class="fighter-image">
+          <div class="fighter-placeholder" id="fighter2-placeholder">?</div>
+        </div>
+        <p class="fighter-name" id="fighter2-name"></p>
+      </div>
+    </div>
+
+    <div id="feedback" class="feedback hidden">
+      <p id="feedback-text"></p>
+      <p id="feedback-detail"></p>
+      <button class="btn-next" id="btn-next">NEXT FIGHT</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 3: LEADERBOARD -->
+  <div id="screen-result" class="screen">
+    <div class="poster-frame">
+      <h2 class="result-title" id="result-title">KNOCKOUT!</h2>
+      <p class="result-score" id="result-score"></p>
+      <p class="result-detail" id="result-detail"></p>
+
+      <div class="leaderboard">
+        <h3 class="leaderboard-title">HALL OF FAME</h3>
+        <ol class="leaderboard-list" id="leaderboard-list">
+          <li class="leaderboard-empty">Loading...</li>
+        </ol>
+      </div>
+
+      <button class="btn-start" id="btn-restart">FIGHT AGAIN</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Images from <a href="https://en.wikipedia.org/" target="_blank" rel="noopener">Wikipedia</a>.
+    Fight data curated from historical records.
+  </footer>
+
+  <script src="quiz.js"></script>
+</body>
+</html>

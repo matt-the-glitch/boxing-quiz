@@ -1,0 +1,14 @@
+[build]
+  command = "node fetch-images.js"
+  publish = "public"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  directory = "netlify/functions"
+
+[[headers]]
+  for = "/data/fighters.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
