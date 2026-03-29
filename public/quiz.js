@@ -120,8 +120,6 @@ async function init() {
     }
   });
 
-  // Load leaderboard for result screen
-  await loadLeaderboard();
 }
 
 // === NICKNAME SYSTEM ===
@@ -406,18 +404,22 @@ async function endGame(allCorrect) {
 
   showScreen("screen-result");
 
-  // Submit score to leaderboard
-  await submitScore(state.nickname.fullName, score);
-  await loadLeaderboard(score);
+  // Submit score and show updated leaderboard in one request
+  await submitAndShowLeaderboard(state.nickname.fullName, score);
 }
 
 // === LEADERBOARD ===
 
-async function loadLeaderboard(highlightScore) {
+async function submitAndShowLeaderboard(name, score) {
   const list = document.getElementById("leaderboard-list");
 
   try {
-    const res = await fetch("/.netlify/functions/leaderboard");
+    // POST returns the updated top 10 immediately — no separate GET needed
+    const res = await fetch("/.netlify/functions/leaderboard", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, score }),
+    });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const entries = await res.json();
 
@@ -426,10 +428,8 @@ async function loadLeaderboard(highlightScore) {
       return;
     }
 
-    list.innerHTML = entries.map((entry, i) => {
-      const isHighlight = highlightScore !== undefined &&
-        entry.name === state.nickname?.fullName &&
-        entry.score === highlightScore;
+    list.innerHTML = entries.map((entry) => {
+      const isHighlight = entry.name === name && entry.score === score;
       return `<li class="${isHighlight ? "highlight" : ""}">
         <span class="lb-name">${escapeHtml(entry.name)}</span>
         <span class="lb-score">${entry.score}</span>
@@ -438,18 +438,6 @@ async function loadLeaderboard(highlightScore) {
   } catch (err) {
     console.warn("Leaderboard unavailable:", err.message);
     list.innerHTML = '<li class="leaderboard-empty">Leaderboard offline</li>';
-  }
-}
-
-async function submitScore(name, score) {
-  try {
-    await fetch("/.netlify/functions/leaderboard", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, score }),
-    });
-  } catch (err) {
-    console.warn("Could not submit score:", err.message);
   }
 }
 
