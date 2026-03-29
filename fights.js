@@ -53,7 +53,7 @@ const FIGHTERS = {
   wilder:      { name: "Deontay Wilder",         wiki: "Deontay_Wilder" },
   usyk:        { name: "Oleksandr Usyk",         wiki: "Oleksandr_Usyk" },
   ruiz:        { name: "Andy Ruiz Jr.",          wiki: "Andy_Ruiz_Jr." },
-  dubois:      { name: "Daniel Dubois",          wiki: "Daniel_Dubois" },
+  dubois:      { name: "Daniel Dubois",          wiki: "Daniel_Dubois_(boxer)" },
   williams:    { name: "Cleveland Williams",      wiki: "Cleveland_Williams" },
   seldon:      { name: "Bruce Seldon",           wiki: "Bruce_Seldon" },
 };

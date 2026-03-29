@@ -195,6 +195,7 @@ function startGame() {
     state.gameOver = false;
 
     showScreen("screen-quiz");
+    SFX.bell();
     showQuote();
     showFight();
   }, 1500);
@@ -311,6 +312,7 @@ function handleAnswer(choice) {
     const chosenEl = choice === 1 ? f1El : f2El;
     chosenEl.classList.add("selected-correct");
 
+    SFX.crowd(true);
     showFeedback(true, fight, winnerFighter);
   } else {
     state.gameOver = true;
@@ -320,6 +322,7 @@ function handleAnswer(choice) {
     chosenEl.classList.add("selected-wrong");
     correctEl.classList.add("was-correct");
 
+    SFX.crowd(false);
     showFeedback(false, fight, winnerFighter);
   }
 }

@@ -1,5 +1,5 @@
 [build]
-  command = "node fetch-images.js"
+  command = "npm install && node fetch-images.js"
   publish = "public"
 
 [build.environment]
