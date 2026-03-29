@@ -18,7 +18,7 @@
   }
 
   window.SFX = {
-    bell:  () => play(bell),
-    crowd: (positive) => play(positive ? cheer : boo, 3.0),
+    bell:  () => play(bell, 2.0),
+    crowd: (positive) => play(positive ? cheer : boo, 2.0),
   };
 })();
