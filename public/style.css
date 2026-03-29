@@ -248,6 +248,15 @@ body {
   cursor: not-allowed;
 }
 
+.btn-gold {
+  background: var(--gold);
+  color: var(--bg);
+}
+
+.btn-gold:hover:not(:disabled) {
+  background: var(--gold-light);
+}
+
 .rules {
   margin-top: 1.5rem;
   font-size: 0.85rem;
