@@ -59,7 +59,92 @@ body {
   padding: 2rem 0;
 }
 
-/* === SCREEN 1: NAME ENTRY === */
+/* === SCREEN 1: INTRO === */
+
+.screen-heading {
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+/* === SPLASH SCREEN === */
+
+#screen-splash {
+  justify-content: center;
+}
+
+.splash-content {
+  text-align: center;
+  animation: splashFadeIn 0.4s ease-out;
+}
+
+.splash-name {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+}
+
+.splash-text {
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+@keyframes splashFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* === QUOTE BAR === */
+
+.quote-bar {
+  text-align: center;
+  margin-bottom: 1.25rem;
+  padding: 0.6rem 1rem;
+  min-height: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: quoteFade 0.5s ease-out;
+}
+
+.quote-bar.hidden {
+  display: none;
+}
+
+.quote-text {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.quote-author {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+@keyframes quoteFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* === SCREEN 2: NAME ENTRY === */
 
 .title {
   font-size: 2.8rem;
@@ -491,6 +576,12 @@ body {
   }
   .title-accent {
     font-size: 4.2rem;
+  }
+  .screen-heading {
+    font-size: 2.8rem;
+  }
+  .splash-text {
+    font-size: 5rem;
   }
   .fighter-image-wrap {
     width: 160px;

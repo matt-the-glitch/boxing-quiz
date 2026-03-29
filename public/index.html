@@ -11,11 +11,20 @@
 </head>
 <body>
 
-  <!-- SCREEN 1: NAME ENTRY -->
-  <div id="screen-name" class="screen active">
+  <!-- SCREEN 1: INTRO -->
+  <div id="screen-intro" class="screen active">
     <div class="poster-frame">
       <h1 class="title">HEAVYWEIGHT<br><span class="title-accent">BOXING QUIZ</span></h1>
       <p class="subtitle">Who won the title fight?</p>
+      <button class="btn-start" id="btn-to-name">ENTER THE RING</button>
+      <p class="rules">Answer correctly to keep your streak alive.<br>One wrong answer and it's over.</p>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: NAME ENTRY -->
+  <div id="screen-name" class="screen">
+    <div class="poster-frame">
+      <h2 class="screen-heading">WHAT'S YOUR<br><span class="title-accent">FIGHT NAME?</span></h2>
 
       <div class="name-entry">
         <label for="player-name">ENTER YOUR NAME</label>
@@ -24,15 +33,26 @@
       </div>
 
       <button class="btn-start" id="btn-start" disabled>FIGHT!</button>
-
-      <p class="rules">Answer correctly to keep your streak alive.<br>One wrong answer and it's over.</p>
     </div>
   </div>
 
-  <!-- SCREEN 2: QUIZ -->
+  <!-- SCREEN 3: LET'S FIGHT SPLASH -->
+  <div id="screen-splash" class="screen">
+    <div class="splash-content">
+      <p class="splash-name" id="splash-name"></p>
+      <h2 class="splash-text">LET'S FIGHT</h2>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: QUIZ -->
   <div id="screen-quiz" class="screen">
     <div class="quiz-header">
       <span class="streak" id="streak">STREAK: 0</span>
+    </div>
+
+    <div class="quote-bar" id="quote-bar">
+      <p class="quote-text" id="quote-text"></p>
+      <p class="quote-author" id="quote-author"></p>
     </div>
 
     <div class="fight-card">
@@ -66,7 +86,7 @@
     </div>
   </div>
 
-  <!-- SCREEN 3: LEADERBOARD -->
+  <!-- SCREEN 5: LEADERBOARD -->
   <div id="screen-result" class="screen">
     <div class="poster-frame">
       <h2 class="result-title" id="result-title">KNOCKOUT!</h2>

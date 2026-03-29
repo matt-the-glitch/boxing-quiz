@@ -9,7 +9,44 @@ const state = {
   streak: 0,
   gameOver: false,
   swapped: false,      // true = left/right positions swapped for current fight
+  quotes: [],          // shuffled quotes queue
+  quoteIndex: 0,
 };
+
+// === BOXING QUOTES ===
+
+const QUOTES = [
+  { text: "Float like a butterfly, sting like a bee.", author: "Muhammad Ali" },
+  { text: "I am the greatest.", author: "Muhammad Ali" },
+  { text: "The fight is won or lost far away from witnesses.", author: "Muhammad Ali" },
+  { text: "It's hard to be humble when you're as great as I am.", author: "Muhammad Ali" },
+  { text: "He can run, but he can't hide.", author: "Joe Louis" },
+  { text: "Once that bell rings, you're on your own.", author: "Joe Louis" },
+  { text: "Everybody wants to go to heaven, but nobody wants to die.", author: "Joe Louis" },
+  { text: "A champion is someone who gets up when he can't.", author: "Jack Dempsey" },
+  { text: "Why waltz with a guy for ten rounds if you can knock him out in one?", author: "Rocky Marciano" },
+  { text: "Everybody has a plan until they get punched in the mouth.", author: "Mike Tyson" },
+  { text: "Discipline is doing what you hate to do, but doing it like you love it.", author: "Mike Tyson" },
+  { text: "A champion shows who he is by what he does when he's tested.", author: "Evander Holyfield" },
+  { text: "It's not the size of the man, it's the size of his heart.", author: "Evander Holyfield" },
+  { text: "In boxing you create a strategy to beat each new opponent. Just like chess.", author: "Lennox Lewis" },
+  { text: "You don't play boxing.", author: "Sugar Ray Leonard" },
+  { text: "I'm on top of the world, baby!", author: "Tyson Fury" },
+  { text: "Physical pain is temporary.", author: "Oleksandr Usyk" },
+  { text: "Stay hungry, stay humble.", author: "Anthony Joshua" },
+  { text: "The hero and the coward both feel the same fear. Heroes just react differently.", author: "Cus D'Amato" },
+  { text: "Fear is like fire. You can make it work for you.", author: "Cus D'Amato" },
+  { text: "The punch that knocks you out is the punch you don't see.", author: "Cus D'Amato" },
+  { text: "To see a man beaten not by a better opponent but by himself is a tragedy.", author: "Cus D'Amato" },
+  { text: "Let's get ready to rumble!", author: "Michael Buffer" },
+  { text: "Boxing is like jazz. The better it is, the less people appreciate it.", author: "George Foreman" },
+  { text: "My punches are just as hard in Chicago as in New York.", author: "Sonny Liston" },
+  { text: "If I didn't think I was gonna win, why the hell would I be fighting?", author: "Rocky Marciano" },
+  { text: "Don't quit. Suffer now and live the rest of your life as a champion.", author: "Muhammad Ali" },
+  { text: "You can't win if you're afraid to lose.", author: "Rocky Marciano" },
+  { text: "It's not rage that drives me. It's competition.", author: "Lennox Lewis" },
+  { text: "The biggest motivation is my desire to be the best.", author: "Oleksandr Usyk" },
+];
 
 // === INIT ===
 
@@ -22,7 +59,13 @@ async function init() {
     return;
   }
 
-  // Screen 1 listeners
+  // Screen: Intro
+  document.getElementById("btn-to-name").addEventListener("click", () => {
+    showScreen("screen-name");
+    document.getElementById("player-name").focus();
+  });
+
+  // Screen: Name entry
   const nameInput = document.getElementById("player-name");
   const btnStart = document.getElementById("btn-start");
 
@@ -41,7 +84,7 @@ async function init() {
 
   btnStart.addEventListener("click", startGame);
 
-  // Screen 2 listeners
+  // Screen: Quiz
   document.getElementById("fighter1").addEventListener("click", () => handleAnswer(1));
   document.getElementById("fighter2").addEventListener("click", () => handleAnswer(2));
 
@@ -54,7 +97,7 @@ async function init() {
 
   document.getElementById("btn-next").addEventListener("click", nextFight);
 
-  // Screen 3 listeners
+  // Screen: Result
   document.getElementById("btn-restart").addEventListener("click", restartGame);
 
   // Keyboard shortcuts
@@ -63,10 +106,16 @@ async function init() {
       if (e.key === "1" || e.key === "ArrowLeft") handleAnswer(1);
       if (e.key === "2" || e.key === "ArrowRight") handleAnswer(2);
       if (e.key === "Enter") {
-        const btnNext = document.getElementById("btn-next");
         if (!document.getElementById("feedback").classList.contains("hidden")) {
           nextFight();
         }
+      }
+    }
+    // Enter on intro screen
+    if (document.getElementById("screen-intro").classList.contains("active")) {
+      if (e.key === "Enter") {
+        showScreen("screen-name");
+        document.getElementById("player-name").focus();
       }
     }
   });
@@ -104,19 +153,51 @@ function updateNicknamePreview(name) {
   preview.textContent = state.nickname.fullName;
 }
 
+// === QUOTES ===
+
+function getNextQuote() {
+  if (state.quotes.length === 0 || state.quoteIndex >= state.quotes.length) {
+    state.quotes = shuffleArray([...QUOTES]);
+    state.quoteIndex = 0;
+  }
+  return state.quotes[state.quoteIndex++];
+}
+
+function showQuote() {
+  const quote = getNextQuote();
+  const bar = document.getElementById("quote-bar");
+  document.getElementById("quote-text").textContent = `"${quote.text}"`;
+  document.getElementById("quote-author").textContent = `— ${quote.author}`;
+  bar.classList.remove("hidden");
+  // Re-trigger animation
+  bar.style.animation = "none";
+  bar.offsetHeight; // force reflow
+  bar.style.animation = "";
+}
+
 // === GAME FLOW ===
 
 function startGame() {
   if (!state.playerName) return;
 
-  // Shuffle fights
-  state.fights = shuffleArray([...state.data.fights]);
-  state.currentIndex = 0;
-  state.streak = 0;
-  state.gameOver = false;
+  // Show splash screen
+  document.getElementById("splash-name").textContent = state.nickname.fullName;
+  showScreen("screen-splash");
 
-  showScreen("screen-quiz");
-  showFight();
+  // After splash, start quiz
+  setTimeout(() => {
+    // Shuffle fights and quotes
+    state.fights = shuffleArray([...state.data.fights]);
+    state.quotes = shuffleArray([...QUOTES]);
+    state.quoteIndex = 0;
+    state.currentIndex = 0;
+    state.streak = 0;
+    state.gameOver = false;
+
+    showScreen("screen-quiz");
+    showQuote();
+    showFight();
+  }, 1500);
 }
 
 function restartGame() {
@@ -206,9 +287,6 @@ function handleAnswer(choice) {
   if (f1El.classList.contains("disabled")) return;
 
   // Map click position back to actual fighter
-  // choice: 1 = left, 2 = right
-  // If swapped: left = fighter2, right = fighter1
-  // If not swapped: left = fighter1, right = fighter2
   let actualChoice;
   if (state.swapped) {
     actualChoice = choice === 1 ? 2 : 1;
@@ -217,12 +295,14 @@ function handleAnswer(choice) {
   }
   const correct = actualChoice === fight.winner;
   const winnerFighter = fight.winner === 1 ? state.data.fighters[fight.fighter1] : state.data.fighters[fight.fighter2];
-  // Determine which display side the winner is on (for visual feedback)
   const winnerSide = (fight.winner === 1) !== state.swapped ? 1 : 2;
 
   // Visual feedback
   f1El.classList.add("disabled");
   f2El.classList.add("disabled");
+
+  // Hide quote during feedback
+  document.getElementById("quote-bar").classList.add("hidden");
 
   if (correct) {
     state.streak++;
@@ -286,6 +366,7 @@ function nextFight() {
   }
 
   state.currentIndex++;
+  showQuote();
   showFight();
 }
 
@@ -353,7 +434,6 @@ async function loadLeaderboard(highlightScore) {
     }).join("");
   } catch (err) {
     console.warn("Leaderboard unavailable:", err.message);
-    // Fallback: show local score
     list.innerHTML = '<li class="leaderboard-empty">Leaderboard offline</li>';
   }
 }
